@@ -30,6 +30,8 @@ namespace raygamecsharp
     {
         public static int Main()
         {
+            Game.SetGameOver(true);
+
             //Create a new instance of the game class
             Game game = new Game();
 
