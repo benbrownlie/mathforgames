@@ -30,7 +30,7 @@ namespace MathForGames
 
         public bool RemoveActor(int index)
         {
-            //Checks to see if the index is outside the bounds of our array
+            //Checks to see if the index is outside the bounds of our array.
             if (index < 0 || index >= _actors.Length)
             {
                 return false;
@@ -93,7 +93,7 @@ namespace MathForGames
 
             //Set the old array to be the tempArray.
             _actors = newArray;
-            //Return whether or not the removal was successful
+            //Return whether or not the removal was successful.
             return actorRemoved;
         }
 
