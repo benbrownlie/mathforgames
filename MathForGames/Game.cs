@@ -76,14 +76,18 @@ namespace MathForGames
 
         }
 
-        public void BuildWalls()
+        public void BuildPark()
         {
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 62; i++)
             {
-                Actor flatWall = new Actor(1, 1, '-', ConsoleColor.Blue);
-                Actor flatWall2 = new Actor(1, 5, '-', ConsoleColor.Blue);
+                Actor flatWall = new Actor(i, 1, '-', ConsoleColor.Blue);
+                Actor flatWall2 = new Actor(i, 24, '-', ConsoleColor.Blue);
+                Actor wall1 = new Actor(1, i - 35, '|', ConsoleColor.Blue);
+                Actor wall2 = new Actor(62, i - 35, '|', ConsoleColor.Blue);
                 _scene.AddActor(flatWall2);
                 _scene.AddActor(flatWall);
+                _scene.AddActor(wall1);
+                _scene.AddActor(wall2);
             }
         }
 
@@ -97,7 +101,7 @@ namespace MathForGames
             Player player = new Player(1, 3, '@', ConsoleColor.Red);
             //_scene.AddActor(actor);
             _scene.AddActor(player);
-            BuildWalls();
+            BuildPark();
         }
 
 
