@@ -12,7 +12,7 @@ namespace MathForGames
     /// - Create simple collision detection between players and other actors.
     /// - Give NPCs simple AI
     /// - Create a simple golf game.Players would need to move an actor representing a
-    ///  ball to an actor to an actor that would represent the hole.The player wins if those two actors collide.
+    ///  ball to an actor to that would represent the hole.The player wins if those two actors collide.
     /// For an added challenge, give the player the ability to switch clubs.Each club will change
     /// the magnitude of the vector applied to the ball's position.
     /// </summary>
