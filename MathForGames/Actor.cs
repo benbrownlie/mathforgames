@@ -24,6 +24,7 @@ namespace MathForGames
         protected Vector2 _velocity;
         protected ConsoleColor _color;
         protected Color _rayColor;
+        public bool Started { get; private set; }
 
 
         public Vector2 Position
@@ -73,7 +74,7 @@ namespace MathForGames
 
         public virtual void Start()
         {
-
+            Started = true;
         }
 
         public virtual void Update()
@@ -86,7 +87,7 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            Raylib.DrawText(_icon.ToString(), (int)_position.X * 32, (int)Position.Y * 32, 32, _rayColor);
+            Raylib.DrawText(_icon.ToString(), (int)(_position.X * 32), (int)(Position.Y * 32), 32, _rayColor);
             Console.ForegroundColor = _color;
             Console.SetCursorPosition((int)_position.X, (int)_position.Y);
             Console.Write(_icon);

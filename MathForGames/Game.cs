@@ -78,24 +78,21 @@ namespace MathForGames
             if (index < 0 || index >= _scenes.Length)
                 return;
 
-            _scenes[_currentSceneIndex].End();
+            if (_scenes[_currentSceneIndex].Started)
+                _scenes[_currentSceneIndex].End();
 
             _currentSceneIndex = index;
-
-            _scenes[_currentSceneIndex].Start();
         }
 
-        public static ConsoleKey GetNextKey()
+        public static bool GetKeyDown(int key)
         {
-            //If the user hasn't pressed a key return.
-            if (!Console.KeyAvailable)
-            {
-                return 0;
-            }
-            //Return the key that was pressed.
-            return Console.ReadKey(true).Key;
+            return Raylib.IsKeyDown((KeyboardKey)key);
         }
 
+        public static bool GetKeyPressed(int key)
+        {
+            return Raylib.IsKeyPressed((KeyboardKey)key);
+        }
         public Game()
         {
             _scenes = new Scene[0];
@@ -193,14 +190,15 @@ namespace MathForGames
             AddScene(scene2);
 
             SetCurrentScene(startingSceneIndex);
-
-
         }
 
 
         //Called every frame.
         public void Update()
         {
+            if (!_scenes[_currentSceneIndex].Started)
+                _scenes[_currentSceneIndex].Start();
+
             _scenes[_currentSceneIndex].Update();
         }
 
@@ -220,7 +218,8 @@ namespace MathForGames
         //Called when the game ends.
         public void End()
         {
-            _scenes[_currentSceneIndex].End();
+            if (_scenes[_currentSceneIndex].Started)
+                _scenes[_currentSceneIndex].End();
         }
 
 
