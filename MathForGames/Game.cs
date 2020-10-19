@@ -4,20 +4,85 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using MathLibrary;
+using Raylib_cs;
 
 namespace MathForGames
 {
     class Game
     {
         private static bool _gameOver = false;
-        private Scene _scene;
-
+        private static Scene[] _scenes;
+        private static int _currentSceneIndex;
         public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
 
         //Static function used to set game over without an instance of game.
         public static void SetGameOver(bool value)
         {
             _gameOver = value;
+        }
+
+        public static Scene GetScene(int index)
+        {
+            return _scenes[index];
+        }
+
+        public static int AddScene(Scene scene)
+        {
+            Scene[] tempArray = new Scene[_scenes.Length + 1];
+
+            for (int i = 0; i < _scenes.Length; i++)
+            {
+                tempArray[i] = _scenes[i];
+            }
+
+            int index = _scenes.Length;
+            tempArray[index] = scene; 
+            _scenes = tempArray;
+
+            return index;
+        }
+
+        public static bool RemoveScene(Scene scene)
+        {
+            if (scene == null)
+            {
+                return false;
+            }
+
+            bool sceneRemoved = false;
+
+            Scene[] tempArray = new Scene[_scenes.Length - 1];
+
+            int j = 0;
+            for (int i = 0; i < _scenes.Length; i++)
+            {
+                if (tempArray[i] != scene)
+                {
+                    tempArray[i] = _scenes[j];
+                    j++;
+                }
+                else
+                {
+                    sceneRemoved = true;
+                }
+            }
+
+            if (sceneRemoved)
+                _scenes = tempArray;
+
+            return sceneRemoved;
+        }
+
+        public static void SetCurrentScene(int index)
+        {
+            if (index < 0 || index >= _scenes.Length)
+                return;
+
+            _scenes[_currentSceneIndex].End();
+
+            _currentSceneIndex = index;
+
+            _scenes[_currentSceneIndex].Start();
         }
 
         public static ConsoleKey GetNextKey()
@@ -29,6 +94,11 @@ namespace MathForGames
             }
             //Return the key that was pressed.
             return Console.ReadKey(true).Key;
+        }
+
+        public Game()
+        {
+            _scenes = new Scene[0];
         }
 
         public void Walls()
@@ -53,25 +123,25 @@ namespace MathForGames
             Actor flatWall15 = new Actor(15, 1, '-', ConsoleColor.Blue);
             Actor flatWall16 = new Actor(16, 1, '-', ConsoleColor.Blue);
 
-            _scene.AddActor(wall1);
-            _scene.AddActor(wall2);
-            _scene.AddActor(wall3);
-            _scene.AddActor(flatWall1);
-            _scene.AddActor(flatWall2);
-            _scene.AddActor(flatWall3);
-            _scene.AddActor(flatWall4);
-            _scene.AddActor(flatWall5);
-            _scene.AddActor(flatWall6);
-            _scene.AddActor(flatWall7);
-            _scene.AddActor(flatWall8);
-            _scene.AddActor(flatWall9);
-            _scene.AddActor(flatWall10);
-            _scene.AddActor(flatWall11);
-            _scene.AddActor(flatWall12);
-            _scene.AddActor(flatWall13);
-            _scene.AddActor(flatWall14);
-            _scene.AddActor(flatWall15);
-            _scene.AddActor(flatWall16);
+            //_scene.AddActor(wall1);
+            //_scene.AddActor(wall2);
+            //_scene.AddActor(wall3);
+            //_scene.AddActor(flatWall1);
+            //_scene.AddActor(flatWall2);
+            //_scene.AddActor(flatWall3);
+            //_scene.AddActor(flatWall4);
+            //_scene.AddActor(flatWall5);
+            //_scene.AddActor(flatWall6);
+            //_scene.AddActor(flatWall7);
+            //_scene.AddActor(flatWall8);
+            //_scene.AddActor(flatWall9);
+            //_scene.AddActor(flatWall10);
+            //_scene.AddActor(flatWall11);
+            //_scene.AddActor(flatWall12);
+            //_scene.AddActor(flatWall13);
+            //_scene.AddActor(flatWall14);
+            //_scene.AddActor(flatWall15);
+            //_scene.AddActor(flatWall16);
 
 
         }
@@ -84,45 +154,73 @@ namespace MathForGames
                 Actor flatWall2 = new Actor(i, 24, '-', ConsoleColor.Blue);
                 Actor wall1 = new Actor(1, i - 35, '|', ConsoleColor.Blue);
                 Actor wall2 = new Actor(62, i - 35, '|', ConsoleColor.Blue);
-                _scene.AddActor(flatWall2);
-                _scene.AddActor(flatWall);
-                _scene.AddActor(wall1);
-                _scene.AddActor(wall2);
+                //_scene.AddActor(flatWall2);
+                //_scene.AddActor(flatWall);
+               //_scene.AddActor(wall1);
+                //_scene.AddActor(wall2);
             }
         }
 
         //Called when the game begins. Use this for initialization.
         public void Start()
         {
+            //Creates a new window for raylib
+            Raylib.InitWindow(1024, 760, "Math For Games");
+            Raylib.SetTargetFPS(60);
+
+            //Set up console window
             Console.CursorVisible = false;
-            _scene = new Scene();
-            //Actor actor = new Actor(0,0, '■', ConsoleColor.Green);
-            //actor.Velocity.X = 1;
-            Player player = new Player(1, 3, '@', ConsoleColor.Red);
-            //_scene.AddActor(actor);
-            _scene.AddActor(player);
-            BuildPark();
+            Console.Title = "Math for Games";
+
+            //Create a new scene for our actors to exist in
+            Scene scene1 = new Scene();
+            Scene scene2 = new Scene();
+
+            //Creates two actors to add to our scene
+            Actor actor = new Actor(0,0,Color.GREEN, '■', ConsoleColor.Green);
+            actor.Velocity.X = 1;
+            Player player = new Player(1,3,Color.RED, '@', ConsoleColor.Red);
+            scene1.AddActor(actor);
+            scene1.AddActor(player);
+
+            //BuildPark();
+
+            scene2.AddActor(player);
+
+            int startingSceneIndex = 0;
+
+            startingSceneIndex = AddScene(scene1);
+            AddScene(scene2);
+
+            SetCurrentScene(startingSceneIndex);
+
+
         }
 
 
         //Called every frame.
         public void Update()
         {
-            _scene.Update();
+            _scenes[_currentSceneIndex].Update();
         }
 
         //Used to display objects and other info on the screen.
         public void Draw()
         {
+            Raylib.BeginDrawing();
+
+            Raylib.ClearBackground(Color.BLACK);
             Console.Clear();
-            _scene.Draw();
+            _scenes[_currentSceneIndex].Draw();
+
+            Raylib.EndDrawing();
         }
 
 
         //Called when the game ends.
         public void End()
         {
-
+            _scenes[_currentSceneIndex].End();
         }
 
 
@@ -131,13 +229,13 @@ namespace MathForGames
         {
             Start();
 
-            while(!_gameOver)
+            while(!_gameOver && !Raylib.WindowShouldClose())
             {
                 Update();
                 Draw();
                 while (Console.KeyAvailable)
                     Console.ReadKey(true);
-                Thread.Sleep(100);
+                Thread.Sleep(150);
             }
 
             End();
