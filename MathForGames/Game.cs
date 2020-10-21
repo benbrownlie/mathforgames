@@ -13,6 +13,13 @@ namespace MathForGames
         private static bool _gameOver = false;
         private static Scene[] _scenes;
         private static int _currentSceneIndex;
+        public static int CurrentSceneIndex
+        {
+            get
+            {
+                return _currentSceneIndex;
+            }
+        }
         public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.White;
 
         //Static function used to set game over without an instance of game.
@@ -24,6 +31,11 @@ namespace MathForGames
         public static Scene GetScene(int index)
         {
             return _scenes[index];
+        }
+
+        public static Scene GetCurrentScene()
+        {
+            return _scenes[_currentSceneIndex];
         }
 
         public static int AddScene(Scene scene)
@@ -176,13 +188,17 @@ namespace MathForGames
             //Creates two actors to add to our scene
             Actor actor = new Actor(0,0,Color.GREEN, '■', ConsoleColor.Green);
             actor.Velocity.X = 1;
+
+            Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
             Player player = new Player(1,3,Color.RED, '@', ConsoleColor.Red);
             scene1.AddActor(actor);
             scene1.AddActor(player);
+            scene1.AddActor(enemy);
 
             //BuildPark();
 
             scene2.AddActor(player);
+            player.Speed = 1;
 
             int startingSceneIndex = 0;
 
@@ -194,12 +210,12 @@ namespace MathForGames
 
 
         //Called every frame.
-        public void Update()
+        public void Update(float deltaTime)
         {
             if (!_scenes[_currentSceneIndex].Started)
                 _scenes[_currentSceneIndex].Start();
 
-            _scenes[_currentSceneIndex].Update();
+            _scenes[_currentSceneIndex].Update(deltaTime);
         }
 
         //Used to display objects and other info on the screen.
@@ -218,7 +234,6 @@ namespace MathForGames
         //Called when the game ends.
         public void End()
         {
-            if (_scenes[_currentSceneIndex].Started)
                 _scenes[_currentSceneIndex].End();
         }
 
@@ -230,11 +245,11 @@ namespace MathForGames
 
             while(!_gameOver && !Raylib.WindowShouldClose())
             {
-                Update();
+                float deltaTime = Raylib.GetFrameTime();
+                Update(deltaTime);
                 Draw();
                 while (Console.KeyAvailable)
                     Console.ReadKey(true);
-                Thread.Sleep(150);
             }
 
             End();
