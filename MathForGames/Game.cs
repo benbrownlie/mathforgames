@@ -191,6 +191,8 @@ namespace MathForGames
 
             Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
             Player player = new Player(1,3,Color.RED, '@', ConsoleColor.Red);
+            enemy.Target = player;
+
             scene1.AddActor(actor);
             scene1.AddActor(player);
             scene1.AddActor(enemy);
@@ -198,7 +200,7 @@ namespace MathForGames
             //BuildPark();
 
             scene2.AddActor(player);
-            player.Speed = 1;
+            player.Speed = 5;
 
             int startingSceneIndex = 0;
 
