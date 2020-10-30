@@ -193,7 +193,7 @@ namespace MathForGames
             Player player = new Player(1,3,Color.RED, '@', ConsoleColor.Red);
             enemy.Target = player;
 
-            scene1.AddActor(actor);
+            //scene1.AddActor(actor);
             scene1.AddActor(player);
             scene1.AddActor(enemy);
 

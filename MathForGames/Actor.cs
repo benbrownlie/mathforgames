@@ -6,11 +6,21 @@ using Raylib_cs;
 
 namespace MathForGames
 {
+    /// <summary>
+    /// This is the base class for all objects that will
+    /// be moved or interacted with in the game
+    /// 
+    /// Create new matrices to transform the actors matrix. The user should be able
+    /// to translate, rotate, and scale the actor.
+    /// </summary>
     class Actor
     {
         protected char _icon = ' ';
         protected Vector2 _velocity;
         protected Matrix3 _transform;
+        protected Matrix3 _translate;
+        protected Matrix3 _rotate;
+        protected Matrix3 _scale;
         protected ConsoleColor _color;
         protected Color _rayColor;
         public bool Started { get; private set; }
