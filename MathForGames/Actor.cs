@@ -31,11 +31,22 @@ namespace MathForGames
             {
                 return new Vector2(_transform.m11, _transform.m21);
             }
-            set
-            {
-                _transform.m11 = value.X;
-                _transform.m21 = value.Y;
-            }
+        }
+
+        public void SetTranslation(Vector2 position)
+        {
+         
+        }
+
+        public void SetRotation(float radians)
+        {
+         
+        }
+
+        public void SetScale(float x, float y)
+        {
+            _scale.m11 = x;
+            _scale.m22 = y;
         }
 
         public void SetTranslation(Vector2 position)
