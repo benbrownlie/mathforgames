@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using MathLibrary;
@@ -170,6 +171,11 @@ namespace MathForGames
             }
         }
 
+        public void BuildSolarSystem()
+        {
+            
+        }
+
         //Called when the game begins. Use this for initialization.
         public void Start()
         {
@@ -188,9 +194,13 @@ namespace MathForGames
             //Creates two actors to add to our scene
             Actor actor = new Actor(0,0,Color.GREEN, '■', ConsoleColor.Green);
             actor.Velocity.X = 1;
+            Enemy enemy = new Enemy(10, 10, Color.GREEN, '.', ConsoleColor.Green);
 
-            Enemy enemy = new Enemy(10, 10, Color.GREEN, '■', ConsoleColor.Green);
-            Player player = new Player(1,3,Color.RED, '@', ConsoleColor.Red);
+            Player player = new Player(1,3,Color.RED, '.', ConsoleColor.Red);
+            player.SetTranslation(new Vector2(10, 10));
+            player.SetRotation(1);
+            player.SetScale(3, 3);
+
             enemy.Target = player;
 
             //scene1.AddActor(actor);

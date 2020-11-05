@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Raylib_cs;
+using System.Globalization;
 
 namespace MathForGames
 {
@@ -10,26 +11,29 @@ namespace MathForGames
     /// This is the base class for all objects that will
     /// be moved or interacted with in the game
     /// 
-    /// Create new matrices to transform the actors matrix. The user should be able
-    /// to translate, rotate, and scale the actor.
+    /// Create a "solar system" using the matrix heirarchy.
     /// </summary>
     class Actor
     {
         protected char _icon = ' ';
         protected Vector2 _velocity;
-        protected Matrix3 _transform = new Matrix3();
+        protected Matrix3 _globalTransform;
+        protected Matrix3 _localTransform = new Matrix3();
         private Matrix3 _translation = new Matrix3();
         private Matrix3 _rotation = new Matrix3();
         private Matrix3 _scale = new Matrix3();
         protected ConsoleColor _color;
         protected Color _rayColor;
+        protected Actor _parent;
+        protected Actor[] _children = new Actor[0];
+        
         public bool Started { get; private set; }
 
         public Vector2 Forward
         {
             get
             {
-                return new Vector2(_transform.m11, _transform.m21);
+                return new Vector2(_localTransform.m11, _localTransform.m21);
             }
         }
 
@@ -43,8 +47,9 @@ namespace MathForGames
         public void SetRotation(float radians)
         {
             _rotation.m11 = (float)(Math.Cos(radians));
+            //
             _rotation.m12 = (float)(Math.Sin(radians));
-            _rotation.m21 = (float)(Math.Sin(radians));
+            _rotation.m21 = -(float)(Math.Sin(radians));
             _rotation.m22 = (float)(Math.Cos(radians));
         }
 
@@ -56,14 +61,22 @@ namespace MathForGames
 
         public void UpdateTransform()
         {
-            _transform = _translation * _rotation * _scale;
+            _localTransform = _translation * _rotation * _scale;
         }
 
-        public Vector2 Position
+        public Vector2 WorldPosition
         {
             get
             {
-                return new Vector2 (_transform.m13, _transform.m23);
+                return new Vector2(_localTransform.m13, _localTransform.m23);
+            }
+        }
+
+        public Vector2 LocalPosition
+        {
+            get
+            {
+                return new Vector2 (_localTransform.m13, _localTransform.m23);
             }
             set
             {
@@ -86,7 +99,7 @@ namespace MathForGames
 
         public Actor()
         {
-            Position = new Vector2();
+            LocalPosition = new Vector2();
             _velocity = new Vector2();
         }
 
@@ -94,8 +107,8 @@ namespace MathForGames
         {
             _rayColor = Color.WHITE;
             _icon = icon;
-            _transform = new Matrix3();
-            Position = new Vector2(x, y);
+            _localTransform = new Matrix3();
+            LocalPosition = new Vector2(x, y);
             _velocity = new Vector2();
             _color = color;
         }
@@ -104,7 +117,49 @@ namespace MathForGames
             : this(x, y, icon, color)
         {
             _rayColor = rayColor;
-            _transform = new Matrix3();
+            _localTransform = new Matrix3();
+        }
+
+        public void AddChild(Actor child)
+        {
+            Actor[] tempArray = new Actor[_children.Length + 1];
+
+            for (int i = 0; i < _children.Length; i++)
+            {
+                tempArray[i] = _children[i];
+            }
+
+            tempArray[_children.Length] = child;
+            _children = tempArray;
+            child._parent = this;
+        }
+
+        public bool RemoveChild(Actor child)
+        {
+            bool childRemoved = false;
+
+            if (child == null)
+                return false;
+
+            Actor[] tempArray = new Actor[_children.Length - 1];
+
+            int j = 0;
+            for (int i = 0; i < _children.Length; i++)
+            {
+                if (child != _children[i])
+                {
+                    tempArray[j] = _children[i];
+                    j++;
+                }
+                else
+                {
+                    childRemoved = true;
+                }
+            }
+
+            _children = tempArray;
+            child._parent = null;
+            return childRemoved;
         }
 
         public virtual void Start()
@@ -115,24 +170,24 @@ namespace MathForGames
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
-            Position += _velocity * deltaTime;
-            Position.X = Math.Clamp(Position.X, 0, Console.WindowWidth-1);
-            Position.Y = Math.Clamp(Position.Y, 0, Console.WindowHeight-1);
+            LocalPosition += _velocity * deltaTime;
+            LocalPosition.X = Math.Clamp(LocalPosition.X, 0, Console.WindowWidth-1);
+            LocalPosition.Y = Math.Clamp(LocalPosition.Y, 0, Console.WindowHeight-1);
         }
 
         public virtual void Draw()
         {
-            Raylib.DrawText(_icon.ToString(), (int)(Position.X * 32), (int)(Position.Y * 32), 32, _rayColor);
+            Raylib.DrawText(_icon.ToString(), (int)(LocalPosition.X * 32), (int)(LocalPosition.Y * 32), 32, _rayColor);
             Raylib.DrawLine(
-              (int)(Position.X * 32),
-              (int)(Position.Y * 32),
-              (int)((Position.X + Forward.X) * 32),
-              (int)((Position.Y + Forward.Y) * 32),
+              (int)(LocalPosition.X * 32),
+              (int)(LocalPosition.Y * 32),
+              (int)((LocalPosition.X + Forward.X) * 32),
+              (int)((LocalPosition.Y + Forward.Y) * 32),
               Color.WHITE
             );
 
             Console.ForegroundColor = _color;
-            Console.SetCursorPosition((int)Position.X, (int)Position.Y);
+            Console.SetCursorPosition((int)LocalPosition.X, (int)LocalPosition.Y);
             Console.Write(_icon);
             Console.ForegroundColor = Game.DefaultColor;
         }
