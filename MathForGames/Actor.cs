@@ -26,6 +26,7 @@ namespace MathForGames
         protected Color _rayColor;
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
+        private float _collisionRadius;
         
         public bool Started { get; private set; }
 
@@ -62,6 +63,29 @@ namespace MathForGames
         public void UpdateTransform()
         {
             _localTransform = _translation * _rotation * _scale;
+        }
+
+        /// <summary>
+        /// Check to see if this actor overlaps another
+        /// </summary>
+        /// <param name="other">The actor that this actor is checking against</param>
+        /// <returns></returns>
+        public bool CheckCollision(Actor other)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Called whenever a collision occurs between this actor and another.
+        /// Use this to define game logic for this actor's collision.
+        /// </summary>
+        /// <param name="other"></param>
+        public virtual void OnCollision(Actor other)
+        {
+            //if (CheckCollision(other) == true)
+            //{
+            //    Scene.RemoveActor(other);
+           // }
         }
 
         public Vector2 WorldPosition
