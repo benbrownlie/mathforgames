@@ -201,6 +201,8 @@ namespace MathForGames
             player.SetRotation(1);
             player.SetScale(3, 3);
 
+            player.AddChild(enemy);
+
             enemy.Target = player;
 
             //scene1.AddActor(actor);

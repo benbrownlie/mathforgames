@@ -48,7 +48,6 @@ namespace MathForGames
         public void SetRotation(float radians)
         {
             _rotation.m11 = (float)(Math.Cos(radians));
-            //
             _rotation.m12 = (float)(Math.Sin(radians));
             _rotation.m21 = -(float)(Math.Sin(radians));
             _rotation.m22 = (float)(Math.Cos(radians));
@@ -63,6 +62,11 @@ namespace MathForGames
         public void UpdateTransform()
         {
             _localTransform = _translation * _rotation * _scale;
+
+            if (_parent != null)
+                _globalTransform = _parent._globalTransform * _localTransform;
+            else
+                _globalTransform = _localTransform;
         }
 
         /// <summary>
@@ -144,8 +148,11 @@ namespace MathForGames
             _localTransform = new Matrix3();
         }
 
-        public void AddChild(Actor child)
+        public bool AddChild(Actor child)
         {
+            if (child == null)
+                return false;
+
             Actor[] tempArray = new Actor[_children.Length + 1];
 
             for (int i = 0; i < _children.Length; i++)
@@ -156,6 +163,7 @@ namespace MathForGames
             tempArray[_children.Length] = child;
             _children = tempArray;
             child._parent = this;
+            return true;
         }
 
         public bool RemoveChild(Actor child)
