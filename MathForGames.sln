@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathForGames", "MathForGames\MathForGames.csproj", "{CB038BE2-FB93-4210-9924-6E8530444AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLibrary", "MathLibrary\MathLibrary.csproj", "{D140BDB7-5B0F-48D7-8C34-197DB0E543B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathLibrary", "MathLibrary\MathLibrary.csproj", "{D140BDB7-5B0F-48D7-8C34-197DB0E543B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathForGames3D", "MathForGames3D\MathForGames3D.csproj", "{AC7EA8E8-4139-4FA8-ABC6-363F83E8CC8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D140BDB7-5B0F-48D7-8C34-197DB0E543B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D140BDB7-5B0F-48D7-8C34-197DB0E543B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D140BDB7-5B0F-48D7-8C34-197DB0E543B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7EA8E8-4139-4FA8-ABC6-363F83E8CC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7EA8E8-4139-4FA8-ABC6-363F83E8CC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7EA8E8-4139-4FA8-ABC6-363F83E8CC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7EA8E8-4139-4FA8-ABC6-363F83E8CC8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
