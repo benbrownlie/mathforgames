@@ -115,5 +115,10 @@ namespace MathLibrary
                     lhs.m31 * rhs.m13 + lhs.m32 * rhs.m23 + lhs.m33 * rhs.m33
                 );
         }
+        //Make this in matrix4 as well
+        public static Vector3 operator *(Matrix3 lhs, Vector2 rhs)
+        {
+            return new Vector3();
+        }
     }
 }
