@@ -93,6 +93,11 @@ namespace MathLibrary
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
         }
 
+        public static Vector4 CrossProduct(Vector4 a, Vector4 b, Vector4 c)
+        {
+            return 
+        }
+
         public Vector4()
         {
             _x = 0;
