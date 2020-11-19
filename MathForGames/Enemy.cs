@@ -53,6 +53,11 @@ namespace MathForGames
             return false;
         }
 
+        public override void Start()
+        {
+            GameManager.enemyCount++;
+        }
+
         public override void Update(float deltaTime)
         {
             if (CheckTargetInSight(1.5f, 5))
@@ -71,5 +76,10 @@ namespace MathForGames
             _sprite.Draw(_globalTransform);
             base.Draw();
         }
+
+        ///public override void Destroy()
+        ///{
+        ///    GameManager.enemyCount--;
+       /// }
     }
 }

@@ -13,7 +13,7 @@ namespace MathLibrary
             m11 = 1; m12 = 0; m13 = 0; m14 = 0;
             m21 = 0; m22 = 1; m23 = 0; m24 = 0;
             m31 = 0; m32 = 0; m33 = 1; m34 = 0;
-            m41 = 0; m42 = 0; m43 = 0; m44 = 0;
+            m41 = 0; m42 = 0; m43 = 0; m44 = 1;
         }
 
         public Matrix4(float m11, float m12, float m13, float m14,
@@ -179,9 +179,13 @@ namespace MathLibrary
             return new Vector4
                 (
                     (lhs.m11 * rhs.X) + (lhs.m12 * rhs.Y) + (lhs.m13 * rhs.Z) + (lhs.m14 * rhs.W),
-                    (lhs.m21 * rhs.X) + (lhs.m22 * rhs.Y) + (lhs.m23 * rhs.Z) + (lhs.m24 * rhs.W),
+
+                    (lhs.m21 * rhs.X) + (lhs.m22 * rhs.Y) + (lhs.m23 * rhs.Z) + (lhs.m24 * rhs.W),                  
+
                     (lhs.m31 * rhs.X) + (lhs.m32 * rhs.Y) + (lhs.m33 * rhs.Z) + (lhs.m34 * rhs.W),
+
                     (lhs.m41 * rhs.X) + (lhs.m42 * rhs.Y) + (lhs.m43 * rhs.Z) + (lhs.m44 * rhs.W)
+
                 );
         }
 

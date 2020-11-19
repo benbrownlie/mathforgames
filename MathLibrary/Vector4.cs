@@ -96,9 +96,9 @@ namespace MathLibrary
         public static Vector4 CrossProduct(Vector4 lhs, Vector4 rhs)
         {
             return new Vector4
-                (((lhs.Y * rhs.Z) - (lhs.Z * rhs.Y)),
-                ((lhs.Z * rhs.X) - (lhs.X - rhs.Z)),
-                ((lhs.X * rhs.Y) - (lhs.Y * rhs.X)));
+                (lhs.Y * rhs.Z - lhs.Z * rhs.Y,
+                lhs.Z * rhs.X - lhs.X - rhs.Z,
+                lhs.X * rhs.Y - lhs.Y * rhs.X, 0);
         }
 
         public Vector4()
@@ -114,6 +114,7 @@ namespace MathLibrary
             _x = x;
             _y = y;
             _z = z;
+            _w = w;
         }
 
         public static Vector4 operator +(Vector4 lhs, Vector4 rhs)
@@ -124,6 +125,11 @@ namespace MathLibrary
             float w = lhs.W + rhs.W;
 
             return new Vector4(x, y, z, w);
+        }
+
+        public static Vector4 operator *(Vector4 lhs, Vector4 rhs)
+        {
+            return new Vector4(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z, lhs.W * rhs.W);
         }
 
         public static Vector4 operator -(Vector4 lhs, Vector4 rhs)
