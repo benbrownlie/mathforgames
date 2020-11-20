@@ -15,7 +15,8 @@ namespace MathForGames
     class Actor
     {
         protected char _icon = ' ';
-        protected Vector2 _velocity;
+        private Vector2 _velocity = new Vector2();
+        private Vector2 acceleration = new Vector2();
         protected Matrix3 _globalTransform = new Matrix3();
         protected Matrix3 _localTransform = new Matrix3();
         private Matrix3 _translation = new Matrix3();
@@ -26,6 +27,7 @@ namespace MathForGames
         protected Actor _parent;
         protected Actor[] _children = new Actor[0];
         private float _collisionRadius;
+        private float _maxSpeed = 5;
         
         public bool Started { get; private set; }
 
@@ -119,6 +121,21 @@ namespace MathForGames
             }
         }
 
+        protected Vector2 Acceleration 
+        { get => acceleration; 
+          set => acceleration = value; }
+        public float MaxSpeed
+        {
+            get
+            {
+                return _maxSpeed;
+            }
+            set
+            {
+                _maxSpeed = value;
+            }
+        }
+
         public Actor()
         {
             LocalPosition = new Vector2();
@@ -196,6 +213,13 @@ namespace MathForGames
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
+
+            Velocity += Acceleration;
+
+            if (Velocity.Magnitude > MaxSpeed)
+                Velocity = Velocity.Normalized * MaxSpeed;
+
+
             LocalPosition += _velocity * deltaTime;
             //LocalPosition.X = Math.Clamp(LocalPosition.X, 0, Console.WindowWidth-1);
             //LocalPosition.Y = Math.Clamp(LocalPosition.Y, 0, Console.WindowHeight-1);
